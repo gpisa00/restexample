@@ -26,7 +26,8 @@ public class InputOutputAspectLog {
 
     @AfterReturning(value = "serviceMethods()", returning = "result")
     public void afterServiceExecution(JoinPoint joinPoint, Object result) {
-        logger.info("RESULT : " + result.toString());
+        if(result != null)
+            logger.info("RESULT : " + result.toString());
         logger.info("FINE - Esecuzione metodo: " + joinPoint.getSignature().getName());
     }
 
