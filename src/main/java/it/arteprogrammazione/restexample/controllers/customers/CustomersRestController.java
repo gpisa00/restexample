@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class CustomersRestController {
@@ -78,6 +79,19 @@ public class CustomersRestController {
     public ResponseEntity deleteById(@PathVariable Integer id) throws CustomerNotFoundException {
         customerService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    //------------------ READ ALL---------------------------------------
+
+    @ApiOperation(code = 200, value = "find a customer in the database by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @GetMapping(value = "/v1/customers")
+    public ResponseEntity<List<CustomerDTO>> findAll() throws CustomerNotFoundException {
+        return ResponseEntity.ok(customerService.findAll());
     }
 
 

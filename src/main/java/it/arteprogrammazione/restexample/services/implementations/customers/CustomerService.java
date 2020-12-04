@@ -12,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -64,5 +68,16 @@ public class CustomerService implements ICustomerService {
         }else{
             throw new CustomerNotFoundException("Customer "+ request.getId() +" not found");
         }
+    }
+
+    @Override
+    public List<CustomerDTO> findAll() throws CustomerNotFoundException {
+        List<CustomerDTO> result = StreamSupport.stream(
+                customerRepository.findAll().spliterator(), false)
+                .map(customer -> ConverterUtil.convert(customer))
+                .collect(Collectors.toList());
+        if(result == null || result.isEmpty())
+            throw new CustomerNotFoundException("Customers is Empty");
+        return result;
     }
 }
