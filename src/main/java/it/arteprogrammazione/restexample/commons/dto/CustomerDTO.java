@@ -16,12 +16,12 @@ public class CustomerDTO implements Serializable {
 
     @NotEmpty(message = "firstName may not be empty")
     @NotBlank(message = "firstName may not be blank")
-    @Pattern(regexp = "^[A-Za-z]*$", message="firstName may be only characters")
+    @Pattern(regexp = "^[A-Za-z]*$", message = "firstName may be only characters")
     private String firstName;
 
     @NotEmpty(message = "firstName may not be empty")
     @NotBlank(message = "firstName may not be blank")
-    @Pattern(regexp = "^[A-Za-z]*$", message="firstName may be only characters")
+    @Pattern(regexp = "^[A-Za-z]*$", message = "firstName may be only characters")
     private String lastName;
 
     private String organization;
