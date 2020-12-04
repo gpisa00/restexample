@@ -26,15 +26,15 @@ public class InputOutputAspectLog {
 
     @AfterReturning(value = "serviceMethods()", returning = "result")
     public void afterServiceExecution(JoinPoint joinPoint, Object result) {
-        if(result != null)
+        if (result != null)
             logger.info("RESULT : " + result.toString());
         logger.info("FINE - Esecuzione metodo: " + joinPoint.getSignature().getName());
     }
 
     @AfterThrowing(value = "serviceMethods()", throwing = "ex")
-    public void afterExceptionServiceExecution(JoinPoint joinPoint, Throwable ex){
+    public void afterExceptionServiceExecution(JoinPoint joinPoint, Throwable ex) {
         logger.error("FINE - Esecuzione metodo: " + joinPoint.getSignature().getName() +
-                " terminato con un errore - "+ ex.getMessage());
+                " terminato con un errore - " + ex.getMessage());
     }
 
 }
