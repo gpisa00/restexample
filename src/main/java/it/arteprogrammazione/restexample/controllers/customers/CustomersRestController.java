@@ -81,7 +81,7 @@ public class CustomersRestController {
         return ResponseEntity.ok().build();
     }
 
-    //------------------ READ ALL---------------------------------------
+    //------------------ READ ALL ---------------------------------------
 
     @ApiOperation(code = 200, value = "find a customer in the database by id")
     @ApiResponses(value = {
