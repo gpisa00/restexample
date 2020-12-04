@@ -48,7 +48,7 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/v1/customers/{id}")
+    @GetMapping(value = "/customers/{id}")
     public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws CustomerNotFoundException {
         return ResponseEntity.ok(customerService.findById(id));
     }
@@ -62,7 +62,7 @@ public class CustomersRestController {
             @ApiResponse(code = 409, message = "CONFLICT"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @PutMapping(value = "/v1/customers")
+    @PutMapping(value = "/customers")
     public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final CustomerDTO request) throws CustomerNotFoundException {
         return ResponseEntity.ok(customerService.update(request));
     }
@@ -75,7 +75,7 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @DeleteMapping(value = "/v1/customers/{id}")
+    @DeleteMapping(value = "/customers/{id}")
     public ResponseEntity deleteById(@PathVariable Integer id) throws CustomerNotFoundException {
         customerService.deleteById(id);
         return ResponseEntity.ok().build();
@@ -89,7 +89,7 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/v1/customers")
+    @GetMapping(value = "/customers")
     public ResponseEntity<List<CustomerDTO>> findAll() throws CustomerNotFoundException {
         return ResponseEntity.ok(customerService.findAll());
     }
