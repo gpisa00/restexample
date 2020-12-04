@@ -37,7 +37,7 @@ public class CustomersRestController {
     })
     @PostMapping(value = "/v1/customers")
     public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final RequestCustomerDTO request) throws CustomerConflictException {
-        return new ResponseEntity<>(customerService.save(request),HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.save(request), HttpStatus.CREATED);
     }
 
     //------------------ READ ---------------------------------------
