@@ -35,7 +35,7 @@ public class CustomersRestController {
             @ApiResponse(code = 409, message = "CONFLICT"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @PostMapping(value = "/v1/customers")
+    @PostMapping(value = "/customers")
     public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final RequestCustomerDTO request) throws CustomerConflictException {
         return new ResponseEntity<>(customerService.save(request), HttpStatus.CREATED);
     }
