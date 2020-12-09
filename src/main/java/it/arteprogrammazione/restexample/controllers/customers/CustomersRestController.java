@@ -67,7 +67,7 @@ public class CustomersRestController {
         return ResponseEntity.ok(customerService.update(request));
     }
 
-    //------------------ DELETE ---------------------------------------
+    //------------------ DELETE -------------------------------------------
 
     @ApiOperation(code = 200, value = "delete a customer in the database by id")
     @ApiResponses(value = {
