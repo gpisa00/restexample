@@ -1,4 +1,4 @@
-package it.arteprogrammazione.restexample.repositories.customers.entities;
+package it.arteprogrammazione.restexample.repositories.common.entities;
 
 import javax.persistence.*;
 

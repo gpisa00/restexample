@@ -1,10 +1,10 @@
 package it.arteprogrammazione.restexample.commons.utils;
 
-import it.arteprogrammazione.restexample.repositories.customers.entities.Customer;
+import it.arteprogrammazione.restexample.repositories.common.entities.Customer;
 import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
 
-public final class ConverterUtil {
+public final class CustomerConverterUtil {
 
     public static Customer convert(CustomerDTO customerDTO){
         Customer c = new Customer();

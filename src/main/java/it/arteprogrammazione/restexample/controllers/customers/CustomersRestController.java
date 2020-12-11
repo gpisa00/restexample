@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.CustomerConflictException;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.CustomerNotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
+import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @PostMapping(value = "/customers")
-    public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final RequestCustomerDTO request) throws CustomerConflictException {
+    public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final RequestCustomerDTO request) throws ConflictException {
         return new ResponseEntity<>(customerService.save(request), HttpStatus.CREATED);
     }
 
@@ -49,7 +49,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @GetMapping(value = "/customers/{id}")
-    public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws CustomerNotFoundException {
+    public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws NotFoundException {
         return ResponseEntity.ok(customerService.findById(id));
     }
 
@@ -63,7 +63,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @PutMapping(value = "/customers")
-    public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final CustomerDTO request) throws CustomerNotFoundException {
+    public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final CustomerDTO request) throws NotFoundException {
         return ResponseEntity.ok(customerService.update(request));
     }
 
@@ -76,7 +76,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @DeleteMapping(value = "/customers/{id}")
-    public ResponseEntity deleteById(@PathVariable Integer id) throws CustomerNotFoundException {
+    public ResponseEntity deleteById(@PathVariable Integer id) throws NotFoundException {
         customerService.deleteById(id);
         return ResponseEntity.ok().build();
     }
@@ -90,7 +90,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @GetMapping(value = "/customers")
-    public ResponseEntity<List<CustomerDTO>> findAll() throws CustomerNotFoundException {
+    public ResponseEntity<List<CustomerDTO>> findAll() throws NotFoundException {
         return ResponseEntity.ok(customerService.findAll());
     }
 

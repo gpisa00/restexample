@@ -16,10 +16,19 @@ public class SwaggerConfig {
     private static final String BASE_PATH = "it.arteprogrammazione.restexample.controllers.";
 
     @Bean
-    public Docket clientiApi() {
+    public Docket customersApi() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false).groupName("customers")
                 .select().apis(RequestHandlerSelectors.basePackage(BASE_PATH + "customers"))
                 .paths(regex(".*/customers.*"))
+                .build();
+    }
+
+
+    @Bean
+    public Docket paymentCardsApi() {
+        return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false).groupName("paymentcards")
+                .select().apis(RequestHandlerSelectors.basePackage(BASE_PATH + "paymentcards"))
+                .paths(regex(".*/paymentcards.*"))
                 .build();
     }
 }

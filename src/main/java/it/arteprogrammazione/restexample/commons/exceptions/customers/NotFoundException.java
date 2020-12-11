@@ -1,10 +1,10 @@
 package it.arteprogrammazione.restexample.commons.exceptions.customers;
 
-public class CustomerNotFoundException extends Exception {
+public class NotFoundException extends Exception {
 
     private static final long serialVersionUID = 3121196518520512147L;
 
-    public CustomerNotFoundException(String message) {
+    public NotFoundException(String message) {
         super(message);
     }
 }
