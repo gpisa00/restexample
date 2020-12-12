@@ -9,7 +9,9 @@ import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictEx
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 public class CustomersRestController {
@@ -102,11 +106,21 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/test/customers")
-    public ResponseEntity<List<EntityModel<CustomerDTO>>> findAllTest() throws NotFoundException {
-        List<EntityModel<CustomerDTO>> list = new ArrayList<>();
-        customerService.findAll().stream().forEach(customerDTO -> list.add(EntityModel.of(customerDTO)));
-        return ResponseEntity.ok(list);
+    @GetMapping(value = "/test/customers", produces = { "application/hal+json" })
+    public ResponseEntity<CollectionModel<CustomerDTO>> findAllTest() throws NotFoundException {
+        List<CustomerDTO> allCustomers =  customerService.findAll();
+        allCustomers.stream().forEach(
+                customerDTO -> {
+                    Link selfLink = linkTo(CustomersRestController.class).slash(customerDTO.getId()).withSelfRel();
+                    customerDTO.add(selfLink);
+                }
+        );
+
+        Link link = linkTo(CustomersRestController.class).withSelfRel();
+        CollectionModel<CustomerDTO> result = CollectionModel.of(allCustomers, link);
+        return ResponseEntity.ok(result);
+
+
     }
 
 
