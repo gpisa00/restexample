@@ -4,10 +4,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
+import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
 import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomerService;
+import it.arteprogrammazione.restexample.services.interfaces.paymentcards.IPaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -19,16 +22,20 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomersRestController {
 
     private final ICustomerService customerService;
+    private final IPaymentCardService paymentCardService;
 
     @Autowired
-    public CustomersRestController(ICustomerService customerService) {
+    public CustomersRestController(ICustomerService customerService,
+                                   IPaymentCardService paymentCardService) {
         this.customerService = customerService;
+        this.paymentCardService = paymentCardService;
     }
 
     //------------------ CREATE ---------------------------------------
@@ -87,19 +94,8 @@ public class CustomersRestController {
     }
 
     //------------------ READ ALL ---------------------------------------
-//
-//    @ApiOperation(code = 200, value = "find a customer in the database by id")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "OK"),
-//            @ApiResponse(code = 404, message = "NOT FOUND"),
-//            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
-//    })
-//    @GetMapping
-//    public ResponseEntity<List<CustomerDTO>> findAll() throws NotFoundException {
-//        return ResponseEntity.ok(customerService.findAll());
-//    }
 
-    @ApiOperation(value = "find a customer in the database by id")
+    @ApiOperation(value = "find all customers in the database")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "NOT FOUND"),
@@ -110,8 +106,18 @@ public class CustomersRestController {
         List<CustomerDTO> allCustomers = customerService.findAll();
         allCustomers.stream().forEach(
                 customerDTO -> {
-                    Link selfLink = linkTo(CustomersRestController.class).slash(customerDTO.getId()).withSelfRel();
+                    Integer idCustomer = customerDTO.getId();
+                    Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
                     customerDTO.add(selfLink);
+
+                    try {
+                        Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
+                                .findByIdCustomer(idCustomer)).withRel("payment_card");
+                        customerDTO.add(paymentCardLink);
+                    }catch (NotFoundException ex){
+                        //
+                    }
+
                 }
         );
 
