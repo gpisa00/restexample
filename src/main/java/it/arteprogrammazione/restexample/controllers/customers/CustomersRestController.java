@@ -13,6 +13,7 @@ import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomer
 import it.arteprogrammazione.restexample.services.interfaces.paymentcards.IPaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,8 +62,20 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws NotFoundException {
-        return ResponseEntity.ok(customerService.findById(id));
+    public ResponseEntity<EntityModel<CustomerDTO>> findById(@PathVariable Integer id) throws NotFoundException {
+        CustomerDTO customer = customerService.findById(id);
+        Integer idCustomer = customer.getId();
+        Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
+        customer.add(selfLink);
+        try {
+            Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
+                    .findByIdCustomer(idCustomer)).withRel("payment_card");
+            customer.add(paymentCardLink);
+        }catch (NotFoundException ex){
+            //
+        }
+        Link link = linkTo(CustomersRestController.class).withSelfRel();
+        return ResponseEntity.ok(EntityModel.of(customer).add(link));
     }
 
     //------------------ UPDATE ---------------------------------------
@@ -109,7 +122,6 @@ public class CustomersRestController {
                     Integer idCustomer = customerDTO.getId();
                     Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
                     customerDTO.add(selfLink);
-
                     try {
                         Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
                                 .findByIdCustomer(idCustomer)).withRel("payment_card");
@@ -117,15 +129,11 @@ public class CustomersRestController {
                     }catch (NotFoundException ex){
                         //
                     }
-
                 }
         );
-
         Link link = linkTo(CustomersRestController.class).withSelfRel();
         CollectionModel<CustomerDTO> result = CollectionModel.of(allCustomers, link);
         return ResponseEntity.ok(result);
-
     }
-
 
 }
