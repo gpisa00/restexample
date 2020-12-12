@@ -4,6 +4,7 @@ import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface ICustomerService {
 
     CustomerDTO update(CustomerDTO request) throws NotFoundException;
 
-    List<CustomerDTO> findAll() throws NotFoundException;
+    CollectionModel<CustomerDTO> findAll() throws NotFoundException;
 }

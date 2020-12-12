@@ -115,24 +115,7 @@ public class CustomersRestController {
     })
     @GetMapping
     public ResponseEntity<CollectionModel<CustomerDTO>> findAllTest() throws NotFoundException {
-        List<CustomerDTO> allCustomers = customerService.findAll();
-        allCustomers.stream().forEach(
-                customerDTO -> {
-                    Integer idCustomer = customerDTO.getId();
-                    Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
-                    customerDTO.add(selfLink);
-                    try {
-                        Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
-                                .findByIdCustomer(idCustomer)).withRel("payment_card");
-                        customerDTO.add(paymentCardLink);
-                    }catch (NotFoundException ex){
-                        //
-                    }
-                }
-        );
-        Link link = linkTo(CustomersRestController.class).withSelfRel();
-        CollectionModel<CustomerDTO> result = CollectionModel.of(allCustomers, link);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(customerService.findAll());
     }
 
 }

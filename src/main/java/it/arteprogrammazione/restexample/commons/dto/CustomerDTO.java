@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class CustomerDTO extends RepresentationModel implements Serializable{
+public class CustomerDTO extends RepresentationModel<CustomerDTO> implements Serializable{
 
     private static final long serialVersionUID = 4839698653028835403L;
 

@@ -5,13 +5,17 @@ import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.commons.utils.CustomerConverterUtil;
+import it.arteprogrammazione.restexample.commons.utils.CustomerModelAssembler;
 import it.arteprogrammazione.restexample.repositories.customers.CustomerRepository;
 import it.arteprogrammazione.restexample.repositories.common.entities.Customer;
 import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomerService;
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,10 +25,12 @@ import java.util.stream.StreamSupport;
 public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CustomerModelAssembler customerModelAssembler;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, CustomerModelAssembler customerModelAssembler) {
         this.customerRepository = customerRepository;
+        this.customerModelAssembler = customerModelAssembler;
     }
 
     @Override
@@ -70,13 +76,10 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public List<CustomerDTO> findAll() throws NotFoundException {
-        List<CustomerDTO> result = StreamSupport.stream(
-                customerRepository.findAll().spliterator(), false)
-                .map(customer -> CustomerConverterUtil.convert(customer))
-                .collect(Collectors.toList());
-        if(result == null || result.isEmpty())
+    public CollectionModel<CustomerDTO> findAll() throws NotFoundException {
+        Iterable<Customer> result = customerRepository.findAll();
+        if(IterableUtils.isEmpty(result))
             throw new NotFoundException("Customers is Empty");
-        return result;
+        return customerModelAssembler.toCollectionModel(result);
     }
 }
