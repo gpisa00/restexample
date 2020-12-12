@@ -62,7 +62,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EntityModel<CustomerDTO>> findById(@PathVariable Integer id) throws NotFoundException {
+    public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws NotFoundException {
         CustomerDTO customer = customerService.findById(id);
         Integer idCustomer = customer.getId();
         Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
@@ -74,8 +74,7 @@ public class CustomersRestController {
         }catch (NotFoundException ex){
             //
         }
-        Link link = linkTo(CustomersRestController.class).withSelfRel();
-        return ResponseEntity.ok(EntityModel.of(customer).add(link));
+        return ResponseEntity.ok(customer);
     }
 
     //------------------ UPDATE ---------------------------------------
