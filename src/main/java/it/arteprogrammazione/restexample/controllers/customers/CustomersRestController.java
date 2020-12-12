@@ -10,19 +10,18 @@ import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundEx
 import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
+@RequestMapping("/customers")
 public class CustomersRestController {
 
     private final ICustomerService customerService;
@@ -41,7 +40,7 @@ public class CustomersRestController {
             @ApiResponse(code = 409, message = "CONFLICT"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @PostMapping(value = "/customers")
+    @PostMapping
     public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final RequestCustomerDTO request) throws ConflictException {
         return new ResponseEntity<>(customerService.save(request), HttpStatus.CREATED);
     }
@@ -54,7 +53,7 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/customers/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws NotFoundException {
         return ResponseEntity.ok(customerService.findById(id));
     }
@@ -68,7 +67,7 @@ public class CustomersRestController {
             @ApiResponse(code = 409, message = "CONFLICT"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @PutMapping(value = "/customers")
+    @PutMapping
     public ResponseEntity<CustomerDTO> save(@Valid @RequestBody final CustomerDTO request) throws NotFoundException {
         return ResponseEntity.ok(customerService.update(request));
     }
@@ -81,7 +80,7 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @DeleteMapping(value = "/customers/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteById(@PathVariable Integer id) throws NotFoundException {
         customerService.deleteById(id);
         return ResponseEntity.ok().build();
@@ -95,7 +94,7 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/customers")
+    @GetMapping
     public ResponseEntity<List<CustomerDTO>> findAll() throws NotFoundException {
         return ResponseEntity.ok(customerService.findAll());
     }
@@ -106,9 +105,9 @@ public class CustomersRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/test/customers", produces = { "application/hal+json" })
+    @GetMapping(value = "/test/customers", produces = {"application/hal+json"})
     public ResponseEntity<CollectionModel<CustomerDTO>> findAllTest() throws NotFoundException {
-        List<CustomerDTO> allCustomers =  customerService.findAll();
+        List<CustomerDTO> allCustomers = customerService.findAll();
         allCustomers.stream().forEach(
                 customerDTO -> {
                     Link selfLink = linkTo(CustomersRestController.class).slash(customerDTO.getId()).withSelfRel();
