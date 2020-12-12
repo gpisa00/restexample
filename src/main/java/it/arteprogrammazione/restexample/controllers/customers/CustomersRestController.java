@@ -87,25 +87,25 @@ public class CustomersRestController {
     }
 
     //------------------ READ ALL ---------------------------------------
+//
+//    @ApiOperation(code = 200, value = "find a customer in the database by id")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK"),
+//            @ApiResponse(code = 404, message = "NOT FOUND"),
+//            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+//    })
+//    @GetMapping
+//    public ResponseEntity<List<CustomerDTO>> findAll() throws NotFoundException {
+//        return ResponseEntity.ok(customerService.findAll());
+//    }
 
-    @ApiOperation(code = 200, value = "find a customer in the database by id")
+    @ApiOperation(value = "find a customer in the database by id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> findAll() throws NotFoundException {
-        return ResponseEntity.ok(customerService.findAll());
-    }
-
-    @ApiOperation(code = 200, value = "find a customer in the database by id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "NOT FOUND"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
-    })
-    @GetMapping(value = "/test/customers", produces = {"application/hal+json"})
     public ResponseEntity<CollectionModel<CustomerDTO>> findAllTest() throws NotFoundException {
         List<CustomerDTO> allCustomers = customerService.findAll();
         allCustomers.stream().forEach(
@@ -118,7 +118,6 @@ public class CustomersRestController {
         Link link = linkTo(CustomersRestController.class).withSelfRel();
         CollectionModel<CustomerDTO> result = CollectionModel.of(allCustomers, link);
         return ResponseEntity.ok(result);
-
 
     }
 
