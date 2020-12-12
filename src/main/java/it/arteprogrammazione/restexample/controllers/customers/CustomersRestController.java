@@ -9,11 +9,13 @@ import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictEx
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.customers.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -92,6 +94,19 @@ public class CustomersRestController {
     @GetMapping(value = "/customers")
     public ResponseEntity<List<CustomerDTO>> findAll() throws NotFoundException {
         return ResponseEntity.ok(customerService.findAll());
+    }
+
+    @ApiOperation(code = 200, value = "find a customer in the database by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @GetMapping(value = "/test/customers")
+    public ResponseEntity<List<EntityModel<CustomerDTO>>> findAllTest() throws NotFoundException {
+        List<EntityModel<CustomerDTO>> list = new ArrayList<>();
+        customerService.findAll().stream().forEach(customerDTO -> list.add(EntityModel.of(customerDTO)));
+        return ResponseEntity.ok(list);
     }
 
 
