@@ -6,15 +6,12 @@ import javax.validation.constraints.Pattern;
 public class RequestPaymentCardDTO {
 
     @NotNull(message = "idCustomer may not be empty")
-    @Pattern(regexp = "^\\d+$")
     private Integer idCustomer;
 
     @NotNull(message = "cardNumber may not be empty")
-    @Pattern(regexp = "^\\d+$")
     private Integer cardNumber;
 
     @NotNull(message = "idCardType may not be empty")
-    @Pattern(regexp = "^\\d+$")
     private Integer idCardType;
 
     public Integer getIdCustomer() {
