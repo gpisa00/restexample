@@ -37,18 +37,18 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
         Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
         customerDTO.add(selfLink);
         try {
-            if(paymentCardRepository.existsById(idCustomer)) {
+            if (paymentCardRepository.existsById(idCustomer)) {
                 Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
                         .findById(idCustomer)).withRel("payment_card");
                 customerDTO.add(paymentCardLink);
             }
-        }catch (NotFoundException ex){
+        } catch (NotFoundException ex) {
             //
         }
         return customerDTO;
     }
 
-    public Customer toEntity(RequestCustomerDTO request){
+    public Customer toEntity(RequestCustomerDTO request) {
         Customer c = new Customer();
         c.setFirstName(request.getFirstName().toUpperCase());
         c.setLastName(request.getLastName().toUpperCase());
@@ -56,7 +56,7 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
         return c;
     }
 
-    public static Customer toEntity(CustomerDTO customerDTO){
+    public static Customer toEntity(CustomerDTO customerDTO) {
         Customer c = new Customer();
         c.setId(customerDTO.getId());
         c.setFirstName(customerDTO.getFirstName().toUpperCase());

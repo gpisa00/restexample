@@ -9,6 +9,4 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     boolean existsByFirstNameAndLastName(String firstName, String lastName);
 
-    //void deleteById(Integer id);
-
 }
