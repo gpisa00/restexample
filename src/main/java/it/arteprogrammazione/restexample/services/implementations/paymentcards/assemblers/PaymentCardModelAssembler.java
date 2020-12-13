@@ -54,7 +54,7 @@ public class PaymentCardModelAssembler extends RepresentationModelAssemblerSuppo
     public PaymentCard toEntity(RequestPaymentCardDTO request) {
         PaymentCard paymentCard = new PaymentCard();
         paymentCard.setIdCustomer(request.getIdCustomer());
-        paymentCard.setCardNumber(request.getCardNumber());
+        paymentCard.setCardNumber(Math.abs(request.getCardNumber()));
         paymentCard.setIdCardType(request.getIdCardType());
         return paymentCard;
     }
