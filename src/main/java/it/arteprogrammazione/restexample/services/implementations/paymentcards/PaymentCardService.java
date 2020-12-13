@@ -4,6 +4,7 @@ import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestPaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.repositories.cardtypes.CardTypeRepository;
 import it.arteprogrammazione.restexample.repositories.common.entities.PaymentCard;
 import it.arteprogrammazione.restexample.repositories.customers.CustomerRepository;
 import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
@@ -22,15 +23,17 @@ public class PaymentCardService implements IPaymentCardService {
 
     private final PaymentCardRepository paymentCardRepository;
     private final CustomerRepository customerRepository;
-
+    private final CardTypeRepository cardTypeRepository;
     private final PaymentCardModelAssembler paymentCardModelAssembler;
 
     @Autowired
     public PaymentCardService(PaymentCardRepository paymentCardRepository,
                               CustomerRepository customerRepository,
+                              CardTypeRepository cardTypeRepository,
                               PaymentCardModelAssembler paymentCardModelAssembler) {
         this.paymentCardRepository = paymentCardRepository;
         this.customerRepository = customerRepository;
+        this.cardTypeRepository = cardTypeRepository;
         this.paymentCardModelAssembler = paymentCardModelAssembler;
     }
 
@@ -56,8 +59,12 @@ public class PaymentCardService implements IPaymentCardService {
     @Transactional
     public PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException {
         Integer idCustomer = request.getIdCustomer();
+
         if(!customerRepository.existsById(idCustomer))
             throw new ConflictException("Customer is not present: " + idCustomer);
+
+        if(!cardTypeRepository.existsById(request.getIdCardType()))
+            throw new ConflictException("Card type not exist");
 
         if (paymentCardRepository.existsById(idCustomer))
             throw new ConflictException("Payment card is present for customer: " + idCustomer);
