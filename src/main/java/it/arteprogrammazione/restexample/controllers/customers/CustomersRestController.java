@@ -81,7 +81,7 @@ public class CustomersRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteById(@PathVariable Integer id) throws NotFoundException {
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) throws NotFoundException {
         customerService.deleteById(id);
         return ResponseEntity.ok().build();
     }

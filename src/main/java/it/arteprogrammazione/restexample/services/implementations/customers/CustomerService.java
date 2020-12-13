@@ -4,6 +4,7 @@ import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
 import it.arteprogrammazione.restexample.services.implementations.customers.assemblers.CustomerModelAssembler;
 import it.arteprogrammazione.restexample.repositories.customers.CustomerRepository;
 import it.arteprogrammazione.restexample.repositories.common.entities.Customer;
@@ -21,11 +22,17 @@ import java.util.Optional;
 public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
+    private final PaymentCardRepository paymentCardRepository;
+
     private final CustomerModelAssembler customerModelAssembler;
 
+
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerModelAssembler customerModelAssembler) {
+    public CustomerService(CustomerRepository customerRepository,
+                           PaymentCardRepository paymentCardRepository,
+                           CustomerModelAssembler customerModelAssembler) {
         this.customerRepository = customerRepository;
+        this.paymentCardRepository = paymentCardRepository;
         this.customerModelAssembler = customerModelAssembler;
     }
 
@@ -51,6 +58,11 @@ public class CustomerService implements ICustomerService {
     @Override
     @Transactional
     public void deleteById(Integer id) throws NotFoundException {
+
+        //Cancellazione tabelle correlate
+        deleteOnTableRelation(id);
+        //-------------------------------
+
         if (customerRepository.existsById(id)) {
             customerRepository.deleteById(id);
         }else{
@@ -75,4 +87,12 @@ public class CustomerService implements ICustomerService {
             throw new NotFoundException("Customers is Empty");
         return customerModelAssembler.toCollectionModel(result);
     }
+
+    //--------------------------------------------------------------------------------
+
+    private void deleteOnTableRelation(Integer id) {
+        if(paymentCardRepository.existsById(id))
+            paymentCardRepository.deleteById(id);
+    }
+
 }
