@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentCardRepository extends CrudRepository<PaymentCard, Integer> {
 
+    boolean existsByCardNumber(Integer cardNumber);
+
 }

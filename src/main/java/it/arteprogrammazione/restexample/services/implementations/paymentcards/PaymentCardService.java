@@ -58,18 +58,27 @@ public class PaymentCardService implements IPaymentCardService {
     @Override
     @Transactional
     public PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException {
+        validateSaveRequest(request);
+        return paymentCardModelAssembler.toModel(paymentCardRepository.save(paymentCardModelAssembler.toEntity(request)));
+
+    }
+
+    //----------------------------------------------------------------------------------------------------
+
+    private void validateSaveRequest(RequestPaymentCardDTO request)  throws ConflictException{
         Integer idCustomer = request.getIdCustomer();
 
-        if(!customerRepository.existsById(idCustomer))
+        if (!customerRepository.existsById(idCustomer))
             throw new ConflictException("Customer is not present: " + idCustomer);
 
-        if(!cardTypeRepository.existsById(request.getIdCardType()))
+        if (!cardTypeRepository.existsById(request.getIdCardType()))
             throw new ConflictException("Card type not exist");
 
         if (paymentCardRepository.existsById(idCustomer))
             throw new ConflictException("Payment card is present for customer: " + idCustomer);
 
-        return paymentCardModelAssembler.toModel(paymentCardRepository.save(paymentCardModelAssembler.toEntity(request)));
+        if (paymentCardRepository.existsByCardNumber(request.getCardNumber()))
+            throw new ConflictException("Payment card number already esists");
 
     }
 }
