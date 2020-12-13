@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/paymentcards")
 public class PaymentCardsRestController {
 
     private final IPaymentCardService paymentCardService;
@@ -28,7 +30,7 @@ public class PaymentCardsRestController {
             @ApiResponse(code = 404, message = "NOT FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
-    @GetMapping(value = "/paymentcards/{idCustomer}")
+    @GetMapping(value = "/{idCustomer}")
     public ResponseEntity<PaymentCardDTO> findById(@PathVariable Integer idCustomer) throws NotFoundException {
         return ResponseEntity.ok(paymentCardService.findById(idCustomer));
     }
