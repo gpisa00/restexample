@@ -1,4 +1,4 @@
-package it.arteprogrammazione.restexample.commons.utils;
+package it.arteprogrammazione.restexample.services.implementations.customers.assemblers;
 
 import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
@@ -6,8 +6,9 @@ import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundEx
 import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
 import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
 import it.arteprogrammazione.restexample.repositories.common.entities.Customer;
+import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<Customer, CustomerDTO> {
 
-    public CustomerModelAssembler() {
+    private final PaymentCardRepository paymentCardRepository;
+
+    @Autowired
+    public CustomerModelAssembler(PaymentCardRepository paymentCardRepository) {
         super(CustomersRestController.class, CustomerDTO.class);
+        this.paymentCardRepository = paymentCardRepository;
     }
 
     @Override
@@ -32,9 +37,11 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
         Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
         customerDTO.add(selfLink);
         try {
-            Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
-                    .findByIdCustomer(idCustomer)).withRel("payment_card");
-            customerDTO.add(paymentCardLink);
+            if(paymentCardRepository.existsById(idCustomer)) {
+                Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
+                        .findByIdCustomer(idCustomer)).withRel("payment_card");
+                customerDTO.add(paymentCardLink);
+            }
         }catch (NotFoundException ex){
             //
         }
