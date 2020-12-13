@@ -78,7 +78,7 @@ public class PaymentCardService implements IPaymentCardService {
             throw new ConflictException("Payment card is present for customer: " + idCustomer);
 
         if (paymentCardRepository.existsByCardNumber(request.getCardNumber()))
-            throw new ConflictException("Payment card number already esists");
+            throw new ConflictException("Payment card number already exists");
 
     }
 }
