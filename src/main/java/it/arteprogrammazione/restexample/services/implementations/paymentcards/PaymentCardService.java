@@ -63,9 +63,17 @@ public class PaymentCardService implements IPaymentCardService {
 
     }
 
+    @Override
+    @Transactional
+    public void deleteById(Integer id) throws NotFoundException {
+        if (!paymentCardRepository.existsById(id))
+            throw new NotFoundException("Payment card " + id + " not exixts");
+        paymentCardRepository.deleteById(id);
+    }
+
     //----------------------------------------------------------------------------------------------------
 
-    private void validateSaveRequest(RequestPaymentCardDTO request)  throws ConflictException{
+    private void validateSaveRequest(RequestPaymentCardDTO request) throws ConflictException {
         Integer idCustomer = request.getIdCustomer();
 
         if (!customerRepository.existsById(idCustomer))

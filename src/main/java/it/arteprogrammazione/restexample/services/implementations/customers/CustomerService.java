@@ -63,11 +63,10 @@ public class CustomerService implements ICustomerService {
         deleteOnTableRelation(id);
         //-------------------------------
 
-        if (customerRepository.existsById(id)) {
-            customerRepository.deleteById(id);
-        }else{
+        if (!customerRepository.existsById(id))
             throw new NotFoundException("Customer "+ id +" not found");
-        }
+
+        customerRepository.deleteById(id);
     }
 
     @Override

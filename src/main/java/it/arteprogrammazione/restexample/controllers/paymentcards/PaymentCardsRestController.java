@@ -61,4 +61,15 @@ public class PaymentCardsRestController {
         return new ResponseEntity<>(paymentCardService.save(request), HttpStatus.CREATED);
     }
 
+    @ApiOperation(code = 200, value = "delete a payment card in the database by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) throws NotFoundException{
+        paymentCardService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }
