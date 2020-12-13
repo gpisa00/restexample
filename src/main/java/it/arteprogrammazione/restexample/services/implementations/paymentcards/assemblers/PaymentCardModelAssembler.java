@@ -1,6 +1,7 @@
 package it.arteprogrammazione.restexample.services.implementations.paymentcards.assemblers;
 
 import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.dto.RequestPaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
 import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
@@ -48,5 +49,13 @@ public class PaymentCardModelAssembler extends RepresentationModelAssemblerSuppo
             //
         }
         return dto;
+    }
+
+    public PaymentCard toEntity(RequestPaymentCardDTO request) {
+        PaymentCard paymentCard = new PaymentCard();
+        paymentCard.setIdCustomer(request.getIdCustomer());
+        paymentCard.setCardNumber(request.getCardNumber());
+        paymentCard.setIdCardType(request.getIdCardType());
+        return paymentCard;
     }
 }

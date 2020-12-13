@@ -1,6 +1,8 @@
 package it.arteprogrammazione.restexample.services.implementations.paymentcards;
 
 import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.dto.RequestPaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.common.entities.PaymentCard;
 import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -42,5 +45,15 @@ public class PaymentCardService implements IPaymentCardService {
         if (IterableUtils.isEmpty(result))
             throw new NotFoundException("Payment Cards is empty");
         return paymentCardModelAssembler.toCollectionModel(result);
+    }
+
+    @Override
+    @Transactional
+    public PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException {
+        Integer idCustomer = request.getIdCustomer();
+        if (paymentCardRepository.existsById(idCustomer))
+            throw new ConflictException("Payment card is present for customer: " + idCustomer);
+        return paymentCardModelAssembler.toModel(paymentCardRepository.save(paymentCardModelAssembler.toEntity(request)));
+
     }
 }

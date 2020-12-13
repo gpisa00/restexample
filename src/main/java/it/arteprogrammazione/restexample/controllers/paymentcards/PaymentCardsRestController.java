@@ -4,15 +4,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.dto.RequestPaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.paymentcards.IPaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/paymentcards")
@@ -46,4 +48,17 @@ public class PaymentCardsRestController {
     public ResponseEntity<CollectionModel<PaymentCardDTO>> findAll() throws NotFoundException {
         return ResponseEntity.ok(paymentCardService.findAll());
     }
+
+    @ApiOperation(code = 201, value = "save payment card in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "CREATED"),
+            @ApiResponse(code = 400, message = "BAD_REQUEST"),
+            @ApiResponse(code = 409, message = "CONFLICT"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @PostMapping
+    public ResponseEntity<PaymentCardDTO> save(@Valid @RequestBody final RequestPaymentCardDTO request) throws ConflictException{
+        return new ResponseEntity<>(paymentCardService.save(request), HttpStatus.CREATED);
+    }
+
 }
