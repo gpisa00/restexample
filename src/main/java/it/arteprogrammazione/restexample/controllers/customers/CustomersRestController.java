@@ -62,18 +62,7 @@ public class CustomersRestController {
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerDTO> findById(@PathVariable Integer id) throws NotFoundException {
-        CustomerDTO customer = customerService.findById(id);
-        Integer idCustomer = customer.getId();
-        Link selfLink = linkTo(CustomersRestController.class).slash(idCustomer).withSelfRel();
-        customer.add(selfLink);
-        try {
-            Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
-                    .findById(idCustomer)).withRel("payment_card");
-            customer.add(paymentCardLink);
-        }catch (NotFoundException ex){
-            //
-        }
-        return ResponseEntity.ok(customer);
+        return ResponseEntity.ok(customerService.findById(id));
     }
 
     //------------------ UPDATE ---------------------------------------
