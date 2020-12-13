@@ -29,7 +29,7 @@ public class PaymentCardsRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @GetMapping(value = "/paymentcards/{idCustomer}")
-    public ResponseEntity<PaymentCardDTO> findByIdCustomer(@PathVariable Integer idCustomer) throws NotFoundException {
-        return ResponseEntity.ok(paymentCardService.findByIdCustomer(idCustomer));
+    public ResponseEntity<PaymentCardDTO> findById(@PathVariable Integer idCustomer) throws NotFoundException {
+        return ResponseEntity.ok(paymentCardService.findById(idCustomer));
     }
 }

@@ -68,7 +68,7 @@ public class CustomersRestController {
         customer.add(selfLink);
         try {
             Link paymentCardLink = linkTo(methodOn(PaymentCardsRestController.class)
-                    .findByIdCustomer(idCustomer)).withRel("payment_card");
+                    .findById(idCustomer)).withRel("payment_card");
             customer.add(paymentCardLink);
         }catch (NotFoundException ex){
             //

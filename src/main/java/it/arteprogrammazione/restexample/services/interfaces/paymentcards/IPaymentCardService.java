@@ -5,5 +5,5 @@ import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundEx
 
 public interface IPaymentCardService {
 
-    PaymentCardDTO findByIdCustomer(Integer idCustomer) throws NotFoundException;
+    PaymentCardDTO findById(Integer idCustomer) throws NotFoundException;
 }

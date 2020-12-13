@@ -1,14 +1,16 @@
 package it.arteprogrammazione.restexample.commons.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import java.io.Serializable;
 
-public class PaymentCardDTO implements Serializable {
+public class PaymentCardDTO extends RepresentationModel<PaymentCardDTO> implements Serializable {
 
     private Integer idCustomer;
 
     private Integer cardNumber;
 
-    private  String type;
+    private String type;
 
     public Integer getIdCustomer() {
         return idCustomer;

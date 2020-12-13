@@ -2,11 +2,9 @@ package it.arteprogrammazione.restexample.services.implementations.paymentcards;
 
 import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
-import it.arteprogrammazione.restexample.commons.utils.PaymentCardConverterUtil;
-import it.arteprogrammazione.restexample.repositories.cardtypes.CardTypeRepository;
-import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
-import it.arteprogrammazione.restexample.repositories.common.entities.CardType;
 import it.arteprogrammazione.restexample.repositories.common.entities.PaymentCard;
+import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
+import it.arteprogrammazione.restexample.services.implementations.paymentcards.assemblers.PaymentCardModelAssembler;
 import it.arteprogrammazione.restexample.services.interfaces.paymentcards.IPaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,25 +15,22 @@ import java.util.Optional;
 public class PaymentCardService implements IPaymentCardService {
 
     private final PaymentCardRepository paymentCardRepository;
-
-    private final CardTypeRepository cardTypeRepository;
+    private final PaymentCardModelAssembler paymentCardModelAssembler;
 
     @Autowired
-    public PaymentCardService(PaymentCardRepository paymentCardRepository, CardTypeRepository cardTypeRepository) {
+    public PaymentCardService(PaymentCardRepository paymentCardRepository,
+                              PaymentCardModelAssembler paymentCardModelAssembler) {
         this.paymentCardRepository = paymentCardRepository;
-        this.cardTypeRepository = cardTypeRepository;
+        this.paymentCardModelAssembler = paymentCardModelAssembler;
     }
 
-
     @Override
-    public PaymentCardDTO findByIdCustomer(Integer idCustomer) throws NotFoundException {
+    public PaymentCardDTO findById(Integer idCustomer) throws NotFoundException {
 
         Optional<PaymentCard> result = paymentCardRepository.findById(idCustomer);
-        if(result.isEmpty())
-            throw new NotFoundException("PaymentCards "+ idCustomer +" not found");
+        if (result.isEmpty())
+            throw new NotFoundException("PaymentCards " + idCustomer + " not found");
 
-        PaymentCard p = result.get();
-        Optional<CardType> cardType = cardTypeRepository.findById(p.getIdCardType());
-        return PaymentCardConverterUtil.convert(p,cardType.get().getType());
+        return paymentCardModelAssembler.toModel(result.get());
     }
 }
