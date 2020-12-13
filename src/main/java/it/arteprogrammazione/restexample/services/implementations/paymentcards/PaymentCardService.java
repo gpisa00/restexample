@@ -30,7 +30,7 @@ public class PaymentCardService implements IPaymentCardService {
     @Override
     public PaymentCardDTO findByIdCustomer(Integer idCustomer) throws NotFoundException {
 
-        Optional<PaymentCard> result = paymentCardRepository.findByIdCustomer(idCustomer);
+        Optional<PaymentCard> result = paymentCardRepository.findById(idCustomer);
         if(result.isEmpty())
             throw new NotFoundException("PaymentCards "+ idCustomer +" not found");
 
