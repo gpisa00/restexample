@@ -1,6 +1,7 @@
 package it.arteprogrammazione.restexample.commons.utils;
 
 import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
+import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
 import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
@@ -39,4 +40,26 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
         }
         return customerDTO;
     }
+
+    public Customer toEntity(RequestCustomerDTO request){
+        Customer c = new Customer();
+        c.setFirstName(request.getFirstName().toUpperCase());
+        c.setLastName(request.getLastName().toUpperCase());
+        c.setOrganization(request.getOrganization().toUpperCase());
+        return c;
+    }
+
+    public static Customer toEntity(CustomerDTO customerDTO){
+        Customer c = new Customer();
+        c.setId(customerDTO.getId());
+        c.setFirstName(customerDTO.getFirstName().toUpperCase());
+        c.setLastName(customerDTO.getLastName().toUpperCase());
+
+        c.setOrganization(
+                customerDTO.getOrganization() != null &&
+                        !customerDTO.getOrganization().isBlank() ?
+                        customerDTO.getOrganization().toUpperCase() : null);
+        return c;
+    }
+
 }
