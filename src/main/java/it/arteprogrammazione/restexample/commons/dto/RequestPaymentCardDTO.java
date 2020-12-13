@@ -1,7 +1,6 @@
 package it.arteprogrammazione.restexample.commons.dto;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 public class RequestPaymentCardDTO {
 

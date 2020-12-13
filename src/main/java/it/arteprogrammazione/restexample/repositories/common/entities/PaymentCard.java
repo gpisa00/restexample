@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class PaymentCard {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCustomer;
 
     private int cardNumber;

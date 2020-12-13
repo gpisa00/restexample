@@ -57,10 +57,11 @@ public class PaymentCardService implements IPaymentCardService {
     public PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException {
         Integer idCustomer = request.getIdCustomer();
         if(!customerRepository.existsById(idCustomer))
-            throw new ConflictException("Customer ii not present: " + idCustomer);
+            throw new ConflictException("Customer is not present: " + idCustomer);
 
         if (paymentCardRepository.existsById(idCustomer))
             throw new ConflictException("Payment card is present for customer: " + idCustomer);
+
         return paymentCardModelAssembler.toModel(paymentCardRepository.save(paymentCardModelAssembler.toEntity(request)));
 
     }
