@@ -6,7 +6,9 @@ import it.arteprogrammazione.restexample.repositories.common.entities.PaymentCar
 import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
 import it.arteprogrammazione.restexample.services.implementations.paymentcards.assemblers.PaymentCardModelAssembler;
 import it.arteprogrammazione.restexample.services.interfaces.paymentcards.IPaymentCardService;
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,5 +34,13 @@ public class PaymentCardService implements IPaymentCardService {
             throw new NotFoundException("PaymentCards " + idCustomer + " not found");
 
         return paymentCardModelAssembler.toModel(result.get());
+    }
+
+    @Override
+    public CollectionModel<PaymentCardDTO> findAll() throws NotFoundException {
+        Iterable<PaymentCard> result = paymentCardRepository.findAll();
+        if (IterableUtils.isEmpty(result))
+            throw new NotFoundException("Payment Cards is empty");
+        return paymentCardModelAssembler.toCollectionModel(result);
     }
 }

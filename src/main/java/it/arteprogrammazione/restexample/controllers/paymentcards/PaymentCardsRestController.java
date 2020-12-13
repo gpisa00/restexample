@@ -7,6 +7,7 @@ import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.paymentcards.IPaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,5 +34,16 @@ public class PaymentCardsRestController {
     @GetMapping(value = "/{idCustomer}")
     public ResponseEntity<PaymentCardDTO> findById(@PathVariable Integer idCustomer) throws NotFoundException {
         return ResponseEntity.ok(paymentCardService.findById(idCustomer));
+    }
+
+    @ApiOperation(value = "find all payment cards in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @GetMapping
+    public ResponseEntity<CollectionModel<PaymentCardDTO>> findAll() throws NotFoundException {
+        return ResponseEntity.ok(paymentCardService.findAll());
     }
 }
