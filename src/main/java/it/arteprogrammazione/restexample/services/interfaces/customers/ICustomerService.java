@@ -6,8 +6,6 @@ import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictEx
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import org.springframework.hateoas.CollectionModel;
 
-import java.util.List;
-
 public interface ICustomerService {
 
     CustomerDTO save(RequestCustomerDTO request) throws ConflictException;
