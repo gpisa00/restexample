@@ -1,4 +1,4 @@
-package it.arteprogrammazione.restexample.commons.dto;
+package it.arteprogrammazione.restexample.commons.dto.paymentcards;
 
 import javax.validation.constraints.NotNull;
 

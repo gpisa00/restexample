@@ -1,4 +1,4 @@
-package it.arteprogrammazione.restexample.commons.dto;
+package it.arteprogrammazione.restexample.commons.dto.customers;
 
 import org.springframework.hateoas.RepresentationModel;
 

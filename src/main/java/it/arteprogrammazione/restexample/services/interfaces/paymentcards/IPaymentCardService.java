@@ -1,7 +1,7 @@
 package it.arteprogrammazione.restexample.services.interfaces.paymentcards;
 
-import it.arteprogrammazione.restexample.commons.dto.PaymentCardDTO;
-import it.arteprogrammazione.restexample.commons.dto.RequestPaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.dto.paymentcards.PaymentCardDTO;
+import it.arteprogrammazione.restexample.commons.dto.paymentcards.RequestPaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import org.springframework.hateoas.CollectionModel;

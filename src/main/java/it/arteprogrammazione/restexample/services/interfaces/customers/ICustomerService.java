@@ -1,7 +1,7 @@
 package it.arteprogrammazione.restexample.services.interfaces.customers;
 
-import it.arteprogrammazione.restexample.commons.dto.CustomerDTO;
-import it.arteprogrammazione.restexample.commons.dto.RequestCustomerDTO;
+import it.arteprogrammazione.restexample.commons.dto.customers.CustomerDTO;
+import it.arteprogrammazione.restexample.commons.dto.customers.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
 import org.springframework.hateoas.CollectionModel;
