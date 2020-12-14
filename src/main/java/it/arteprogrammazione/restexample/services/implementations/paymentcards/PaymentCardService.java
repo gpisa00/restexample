@@ -42,7 +42,7 @@ public class PaymentCardService implements IPaymentCardService {
 
         Optional<PaymentCard> result = paymentCardRepository.findById(idCustomer);
         if (result.isEmpty())
-            throw new NotFoundException("PaymentCards " + idCustomer + " not found");
+            throw new NotFoundException("Payment Card " + idCustomer + " not found");
 
         return paymentCardModelAssembler.toModel(result.get());
     }

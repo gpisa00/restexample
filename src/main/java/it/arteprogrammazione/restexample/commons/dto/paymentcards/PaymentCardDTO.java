@@ -35,4 +35,13 @@ public class PaymentCardDTO extends RepresentationModel<PaymentCardDTO> implemen
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "PaymentCardDTO{" +
+                "idCustomer=" + idCustomer +
+                ", cardNumber=" + cardNumber +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

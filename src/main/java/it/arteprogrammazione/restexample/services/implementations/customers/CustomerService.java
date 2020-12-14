@@ -59,12 +59,12 @@ public class CustomerService implements ICustomerService {
     @Transactional
     public void deleteById(Integer id) throws NotFoundException {
 
+        if (!customerRepository.existsById(id))
+            throw new NotFoundException("Customer "+ id +" not found");
+
         //Cancellazione tabelle correlate
         deleteOnTableRelation(id);
         //-------------------------------
-
-        if (!customerRepository.existsById(id))
-            throw new NotFoundException("Customer "+ id +" not found");
 
         customerRepository.deleteById(id);
     }

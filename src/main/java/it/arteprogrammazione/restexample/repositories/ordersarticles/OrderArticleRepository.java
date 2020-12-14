@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderArticleRepository extends CrudRepository<OrderArticle, Integer> {
+    Iterable<OrderArticle> findByIdArticle(Integer idArticle);
+
+    void deleteByIdArticle(Integer id);
 }
