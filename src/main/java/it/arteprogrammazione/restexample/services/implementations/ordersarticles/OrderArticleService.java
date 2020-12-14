@@ -3,12 +3,17 @@ package it.arteprogrammazione.restexample.services.implementations.ordersarticle
 import it.arteprogrammazione.restexample.commons.dto.ordersarticle.RequestOrderArticleDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.articles.ArticleRepository;
+import it.arteprogrammazione.restexample.repositories.common.entities.Article;
+import it.arteprogrammazione.restexample.repositories.common.entities.Order;
 import it.arteprogrammazione.restexample.repositories.common.entities.OrderArticle;
 import it.arteprogrammazione.restexample.repositories.orders.OrderRepository;
 import it.arteprogrammazione.restexample.repositories.ordersarticles.OrderArticleRepository;
 import it.arteprogrammazione.restexample.services.interfaces.ordersarticles.IOrderArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class OrderArticleService implements IOrderArticleService {
@@ -25,30 +30,44 @@ public class OrderArticleService implements IOrderArticleService {
     }
 
     @Override
+    @Transactional
     public void hookArticleToOrder(RequestOrderArticleDTO request) throws NotFoundException {
 
         Integer idOrder = request.getIdOrder();
         Integer idArticle = request.getIdArticle();
 
-        if(!orderRepository.existsById(idOrder))
-            throw new NotFoundException("Order not exists");
+        Order order = orderRepository.findById(idOrder).orElseThrow(
+                () -> new NotFoundException("Order not exists"));
 
-        if(!articleRepository.existsById(idArticle))
-            throw new NotFoundException("Article not exists");
+        Article article = articleRepository.findById(idArticle).orElseThrow(
+                () -> new NotFoundException("Article not exists")
+        );
 
         OrderArticle orderArticle = new OrderArticle();
         orderArticle.setIdOrder(idOrder);
         orderArticle.setIdArticle(idArticle);
-
         orderArticleRepository.save(orderArticle);
+
+        orderRepository.setTotalPrice(order.getTotalPrice()+article.getPrice(), order.getId());
     }
 
     @Override
+    @Transactional
     public void unhookArticleToOrder(Integer id) throws NotFoundException {
 
-        if(!orderArticleRepository.existsById(id))
-            throw new NotFoundException("Order Article not exists");
+        OrderArticle orderArticle = orderArticleRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Order Article not exists"));
 
-        orderArticleRepository.deleteById(id);
+        Order order = orderRepository.findById(orderArticle.getIdOrder()).orElseThrow(
+                () -> new NotFoundException("Order not exists"));
+
+        Article article = articleRepository.findById(orderArticle.getIdArticle()).orElseThrow(
+                () -> new NotFoundException("Article not exists")
+        );
+
+        orderArticleRepository.deleteById(orderArticle.getId());
+
+        orderRepository.setTotalPrice(order.getTotalPrice()-article.getPrice(), order.getId());
+
     }
 }
