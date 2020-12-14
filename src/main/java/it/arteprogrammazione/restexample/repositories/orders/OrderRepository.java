@@ -13,4 +13,5 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     @Query("update Order o set o.totalPrice = ?1 where o.id = ?2")
     int setTotalPrice(Integer totalPrice, Integer id);
 
+    Iterable<Order> findByIdCustomer(Integer idCustomer);
 }

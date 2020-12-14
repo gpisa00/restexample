@@ -4,9 +4,14 @@ import it.arteprogrammazione.restexample.commons.dto.customers.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.customers.RequestCustomerDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
+import it.arteprogrammazione.restexample.controllers.orders.OrdersRestController;
 import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
 import it.arteprogrammazione.restexample.repositories.common.entities.Customer;
+import it.arteprogrammazione.restexample.repositories.common.entities.Order;
+import it.arteprogrammazione.restexample.repositories.common.entities.OrderArticle;
+import it.arteprogrammazione.restexample.repositories.orders.OrderRepository;
 import it.arteprogrammazione.restexample.repositories.paymentcards.PaymentCardRepository;
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -19,11 +24,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<Customer, CustomerDTO> {
 
     private final PaymentCardRepository paymentCardRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public CustomerModelAssembler(PaymentCardRepository paymentCardRepository) {
+    public CustomerModelAssembler(PaymentCardRepository paymentCardRepository,
+                                  OrderRepository orderRepository) {
         super(CustomersRestController.class, CustomerDTO.class);
         this.paymentCardRepository = paymentCardRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -42,6 +50,16 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
                         .findById(idCustomer)).withRel("payment_card");
                 customerDTO.add(paymentCardLink);
             }
+
+            Iterable<Order> orders = orderRepository.findByIdCustomer(idCustomer);
+            if(!IterableUtils.isEmpty(orders)){
+                for(Order order : orders){
+                    Link orderLink = linkTo(methodOn(OrdersRestController.class)
+                            .findById(order.getId())).withRel("orders");
+                    customerDTO.add(orderLink);
+                }
+            }
+
         } catch (NotFoundException ex) {
             //
         }
