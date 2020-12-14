@@ -39,12 +39,19 @@ public class SwaggerConfig {
                 .build();
     }
 
-
     @Bean
     public Docket paymentCardsApi() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false).groupName("paymentcards")
                 .select().apis(RequestHandlerSelectors.basePackage(BASE_PATH + "paymentcards"))
                 .paths(regex(".*/paymentcards.*"))
+                .build();
+    }
+
+    @Bean
+    public Docket articlesApi() {
+        return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false).groupName("articles")
+                .select().apis(RequestHandlerSelectors.basePackage(BASE_PATH + "articles"))
+                .paths(regex(".*/articles.*"))
                 .build();
     }
 }
