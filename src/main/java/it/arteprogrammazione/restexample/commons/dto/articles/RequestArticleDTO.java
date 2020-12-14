@@ -8,7 +8,7 @@ public class RequestArticleDTO {
 
     private Integer price;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

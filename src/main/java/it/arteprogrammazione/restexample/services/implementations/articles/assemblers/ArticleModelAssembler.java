@@ -59,7 +59,8 @@ public class ArticleModelAssembler extends RepresentationModelAssemblerSupport<A
 
     public Article toEntity(RequestArticleDTO request) {
         Article article = new Article();
-        article.setId(request.getId());
+        if(request.getId() != null)
+            article.setId(request.getId());
         article.setDescription(request.getDescription());
         article.setPrice(request.getPrice());
         return article;
