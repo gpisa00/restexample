@@ -7,10 +7,8 @@ import java.util.Date;
 
 public class RequestOrderDTO {
 
-    @NotNull
     private Integer id;
 
-    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CET")
     private Date deliveryDate;
 
