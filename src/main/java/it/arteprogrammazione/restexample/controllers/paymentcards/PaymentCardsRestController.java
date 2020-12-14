@@ -57,7 +57,7 @@ public class PaymentCardsRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @PostMapping
-    public ResponseEntity<PaymentCardDTO> save(@Valid @RequestBody final RequestPaymentCardDTO request) throws ConflictException{
+    public ResponseEntity<PaymentCardDTO> save(@Valid @RequestBody final RequestPaymentCardDTO request) throws ConflictException, NotFoundException {
         return new ResponseEntity<>(paymentCardService.save(request), HttpStatus.CREATED);
     }
 
@@ -81,7 +81,7 @@ public class PaymentCardsRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @PutMapping
-    public ResponseEntity<PaymentCardDTO> update(@Valid @RequestBody RequestPaymentCardDTO request) throws NotFoundException{
+    public ResponseEntity<PaymentCardDTO> update(@Valid @RequestBody RequestPaymentCardDTO request) throws NotFoundException, ConflictException {
         return ResponseEntity.ok(paymentCardService.update(request));
     }
 }
