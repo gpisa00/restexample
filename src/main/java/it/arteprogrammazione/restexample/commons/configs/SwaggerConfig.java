@@ -63,11 +63,4 @@ public class SwaggerConfig {
                 .build();
     }
 
-    @Bean
-    public Docket ordersArticlesApi() {
-        return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false).groupName("ordersarticles")
-                .select().apis(RequestHandlerSelectors.basePackage(BASE_PATH + "ordersarticles"))
-                .paths(regex(".*/ordersarticles.*"))
-                .build();
-    }
 }
