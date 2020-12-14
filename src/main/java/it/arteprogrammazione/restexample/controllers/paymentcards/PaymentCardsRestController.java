@@ -72,4 +72,16 @@ public class PaymentCardsRestController {
         paymentCardService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    @ApiOperation(code = 200, value = "update payment card in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 409, message = "CONFLICT"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @PutMapping
+    public ResponseEntity<PaymentCardDTO> update(RequestPaymentCardDTO request) throws NotFoundException{
+        return ResponseEntity.ok(paymentCardService.update(request));
+    }
 }

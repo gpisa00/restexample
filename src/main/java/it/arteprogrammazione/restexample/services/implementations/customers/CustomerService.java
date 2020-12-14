@@ -72,11 +72,10 @@ public class CustomerService implements ICustomerService {
     @Override
     @Transactional
     public CustomerDTO update(CustomerDTO request) throws NotFoundException {
-        if (customerRepository.existsById(request.getId())) {
-            return  customerModelAssembler.toModel(customerRepository.save(customerModelAssembler.toEntity(request)));
-        }else{
+        if (!customerRepository.existsById(request.getId()))
             throw new NotFoundException("Customer "+ request.getId() +" not found");
-        }
+
+        return  customerModelAssembler.toModel(customerRepository.save(customerModelAssembler.toEntity(request)));
     }
 
     @Override

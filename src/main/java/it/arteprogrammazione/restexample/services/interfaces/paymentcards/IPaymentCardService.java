@@ -15,4 +15,6 @@ public interface IPaymentCardService {
     PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException;
 
     void deleteById(Integer id) throws NotFoundException;
+
+    PaymentCardDTO update(RequestPaymentCardDTO request) throws NotFoundException;
 }
