@@ -72,6 +72,7 @@ public class PaymentCardService implements IPaymentCardService {
     }
 
     @Override
+    @Transactional
     public PaymentCardDTO update(RequestPaymentCardDTO request) throws NotFoundException, ConflictException {
         validateSaveRequest(request, true);
 

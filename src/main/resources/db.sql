@@ -40,6 +40,7 @@ CREATE TABLE articles
 
 CREATE TABLE orders_articles
 (
+ "id"          serial primary key NOT NULL,
  id_order   integer NOT NULL,
  id_article integer NOT NULL,
  CONSTRAINT FK_ORDER FOREIGN KEY ( id_order ) REFERENCES "public".orders ( "id" ),

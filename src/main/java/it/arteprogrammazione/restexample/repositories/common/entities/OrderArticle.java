@@ -1,17 +1,28 @@
 package it.arteprogrammazione.restexample.repositories.common.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "orders_articles")
 @Entity
 public class OrderArticle {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private int idOrder;
 
     private int idArticle;
 
     public OrderArticle() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdOrder() {
