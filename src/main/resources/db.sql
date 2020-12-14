@@ -42,7 +42,6 @@ CREATE TABLE orders_articles
 (
  id_order   integer NOT NULL,
  id_article integer NOT NULL,
- CONSTRAINT PK_orders_articles PRIMARY KEY ( id_order, id_article ),
  CONSTRAINT FK_ORDER FOREIGN KEY ( id_order ) REFERENCES "public".orders ( "id" ),
  CONSTRAINT FK_ARTICLE FOREIGN KEY ( id_article ) REFERENCES "public".articles ( "id" )
 );
