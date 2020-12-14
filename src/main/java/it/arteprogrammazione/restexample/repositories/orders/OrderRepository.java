@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepository extends CrudRepository<Order, Integer> {
 
     @Modifying
-    @Query("update public.orders o set o.total_price = ?1 where order.id = ?2")
+    @Query("update Order o set o.total_price = ?1 where order.id = ?2")
     int setTotalPrice(Integer totalPrice, Integer id);
 
 }
