@@ -55,6 +55,9 @@ public class OrderArticleService implements IOrderArticleService {
     @Transactional
     public void unhookArticleToOrder(Integer id) throws NotFoundException {
 
+        if(!orderArticleRepository.existsById(id))
+            throw new NotFoundException("Order Article not exists");
+
         OrderArticle orderArticle = orderArticleRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Order Article not exists"));
 
@@ -64,6 +67,8 @@ public class OrderArticleService implements IOrderArticleService {
         Article article = articleRepository.findById(orderArticle.getIdArticle()).orElseThrow(
                 () -> new NotFoundException("Article not exists")
         );
+
+
 
         orderArticleRepository.deleteById(orderArticle.getId());
 
