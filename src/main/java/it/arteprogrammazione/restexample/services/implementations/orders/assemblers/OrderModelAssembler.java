@@ -44,7 +44,7 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
         dto.setPurchaseDate(order.getPurchaseDate());
         dto.setTotalPrice(order.getTotalPrice());
         dto.setIdCustomer(idCustomer);
-        Link selfLink = linkTo(ArticlesRestController.class).slash(idOrder).withSelfRel();
+        Link selfLink = linkTo(OrdersRestController.class).slash(idOrder).withSelfRel();
         dto.add(selfLink);
 
         try {
