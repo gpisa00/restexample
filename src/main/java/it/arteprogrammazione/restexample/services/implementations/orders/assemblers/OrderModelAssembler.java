@@ -57,9 +57,9 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
 
 
             Iterable<OrderArticle> orderArticles = orderArticleRepository.findByIdOrder(idOrder);
-            if(!IterableUtils.isEmpty(orderArticles)){
-                for(OrderArticle orderArticle : orderArticles){
-                    Link orderLink = linkTo(methodOn(OrdersRestController.class)
+            if (!IterableUtils.isEmpty(orderArticles)) {
+                for (OrderArticle orderArticle : orderArticles) {
+                    Link orderLink = linkTo(methodOn(ArticlesRestController.class)
                             .findById(orderArticle.getIdArticle())).withRel("articles");
                     dto.add(orderLink);
                 }
@@ -73,7 +73,7 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
 
     public Order toEntity(RequestOrderDTO request) {
         Order order = new Order();
-        if(request.getId() != null)
+        if (request.getId() != null)
             order.setId(request.getId());
 
         order.setDeliveryDate(request.getDeliveryDate());
