@@ -12,9 +12,9 @@ public interface IPaymentCardService {
 
     CollectionModel<PaymentCardDTO> findAll() throws NotFoundException;
 
-    PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException;
+    PaymentCardDTO save(RequestPaymentCardDTO request) throws ConflictException, NotFoundException;
 
     void deleteById(Integer id) throws NotFoundException;
 
-    PaymentCardDTO update(RequestPaymentCardDTO request) throws NotFoundException;
+    PaymentCardDTO update(RequestPaymentCardDTO request) throws NotFoundException, ConflictException;
 }
