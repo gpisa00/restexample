@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import it.arteprogrammazione.restexample.commons.dto.articles.ArticleDTO;
 import it.arteprogrammazione.restexample.commons.dto.articles.RequestArticleDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.articles.IArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -57,7 +57,7 @@ public class ArticlesRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @PostMapping
-    public ResponseEntity<ArticleDTO> save(@Valid @RequestBody final RequestArticleDTO request) throws ConflictException {
+    public ResponseEntity<ArticleDTO> save(@Valid @RequestBody final RequestArticleDTO request) throws ConflictException, NotFoundException {
         return new ResponseEntity<>(articleService.save(request, false), HttpStatus.CREATED);
     }
 

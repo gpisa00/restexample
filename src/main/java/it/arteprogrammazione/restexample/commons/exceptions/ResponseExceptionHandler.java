@@ -1,7 +1,7 @@
 package it.arteprogrammazione.restexample.commons.exceptions;
 
-import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

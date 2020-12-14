@@ -1,4 +1,4 @@
-package it.arteprogrammazione.restexample.commons.exceptions.customers;
+package it.arteprogrammazione.restexample.commons.exceptions.commons;
 
 public class NotFoundException extends Exception {
 

@@ -1,33 +1,30 @@
-package it.arteprogrammazione.restexample.repositories.common.entities;
+package it.arteprogrammazione.restexample.commons.dto.orders;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Table(name = "orders")
-@Entity
-public class Order {
+public class RequestOrderDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @NotNull
+    private Integer id;
 
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CET")
     private Date deliveryDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CET")
     private Date purchaseDate;
 
-    @Column(updatable= false)
-    private int totalPrice;
+    @NotNull
+    private Integer idCustomer;
 
-    private int idCustomer;
-
-    public Order() {
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,29 +44,20 @@ public class Order {
         this.purchaseDate = purchaseDate;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public int getIdCustomer() {
+    public Integer getIdCustomer() {
         return idCustomer;
     }
 
-    public void setIdCustomer(int idCustomer) {
+    public void setIdCustomer(Integer idCustomer) {
         this.idCustomer = idCustomer;
     }
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "RequestOrderDTO{" +
                 "id=" + id +
                 ", deliveryDate=" + deliveryDate +
                 ", purchaseDate=" + purchaseDate +
-                ", totalPrice=" + totalPrice +
                 ", idCustomer=" + idCustomer +
                 '}';
     }

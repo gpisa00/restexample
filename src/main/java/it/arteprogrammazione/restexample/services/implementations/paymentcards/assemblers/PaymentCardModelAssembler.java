@@ -2,7 +2,7 @@ package it.arteprogrammazione.restexample.services.implementations.paymentcards.
 
 import it.arteprogrammazione.restexample.commons.dto.paymentcards.PaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.dto.paymentcards.RequestPaymentCardDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
 import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
 import it.arteprogrammazione.restexample.repositories.cardtypes.CardTypeRepository;

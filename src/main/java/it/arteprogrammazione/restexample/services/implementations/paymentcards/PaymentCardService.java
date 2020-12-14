@@ -2,8 +2,8 @@ package it.arteprogrammazione.restexample.services.implementations.paymentcards;
 
 import it.arteprogrammazione.restexample.commons.dto.paymentcards.PaymentCardDTO;
 import it.arteprogrammazione.restexample.commons.dto.paymentcards.RequestPaymentCardDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.cardtypes.CardTypeRepository;
 import it.arteprogrammazione.restexample.repositories.common.entities.PaymentCard;
 import it.arteprogrammazione.restexample.repositories.customers.CustomerRepository;
@@ -94,7 +94,7 @@ public class PaymentCardService implements IPaymentCardService {
             throw new ConflictException("Customer is not present: " + idCustomer);
 
         if (!cardTypeRepository.existsById(request.getIdCardType()))
-            throw new ConflictException("Card type not exist");
+            throw new ConflictException("Card type not exists");
 
 
         if (paymentCardRepository.existsByCardNumber(request.getCardNumber()))

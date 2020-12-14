@@ -2,8 +2,8 @@ package it.arteprogrammazione.restexample.services.interfaces.customers;
 
 import it.arteprogrammazione.restexample.commons.dto.customers.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.customers.RequestCustomerDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import org.springframework.hateoas.CollectionModel;
 
 public interface ICustomerService {

@@ -2,7 +2,7 @@ package it.arteprogrammazione.restexample.services.implementations.customers.ass
 
 import it.arteprogrammazione.restexample.commons.dto.customers.CustomerDTO;
 import it.arteprogrammazione.restexample.commons.dto.customers.RequestCustomerDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
 import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
 import it.arteprogrammazione.restexample.repositories.common.entities.Customer;

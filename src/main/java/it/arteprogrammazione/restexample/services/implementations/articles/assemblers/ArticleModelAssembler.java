@@ -2,15 +2,11 @@ package it.arteprogrammazione.restexample.services.implementations.articles.asse
 
 import it.arteprogrammazione.restexample.commons.dto.articles.ArticleDTO;
 import it.arteprogrammazione.restexample.commons.dto.articles.RequestArticleDTO;
-import it.arteprogrammazione.restexample.commons.dto.paymentcards.RequestPaymentCardDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.controllers.articles.ArticlesRestController;
-import it.arteprogrammazione.restexample.controllers.customers.CustomersRestController;
 import it.arteprogrammazione.restexample.controllers.orders.OrdersRestController;
-import it.arteprogrammazione.restexample.controllers.paymentcards.PaymentCardsRestController;
 import it.arteprogrammazione.restexample.repositories.common.entities.Article;
 import it.arteprogrammazione.restexample.repositories.common.entities.OrderArticle;
-import it.arteprogrammazione.restexample.repositories.common.entities.PaymentCard;
 import it.arteprogrammazione.restexample.repositories.ordersarticles.OrderArticleRepository;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;

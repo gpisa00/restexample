@@ -9,4 +9,8 @@ public interface OrderArticleRepository extends CrudRepository<OrderArticle, Int
     Iterable<OrderArticle> findByIdArticle(Integer idArticle);
 
     void deleteByIdArticle(Integer id);
+
+    Iterable<OrderArticle> findByIdOrder(Integer idOrder);
+
+    void deleteByIdOrder(Integer id);
 }

@@ -2,8 +2,8 @@ package it.arteprogrammazione.restexample.services.implementations.articles;
 
 import it.arteprogrammazione.restexample.commons.dto.articles.ArticleDTO;
 import it.arteprogrammazione.restexample.commons.dto.articles.RequestArticleDTO;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.ConflictException;
-import it.arteprogrammazione.restexample.commons.exceptions.customers.NotFoundException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
+import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.articles.ArticleRepository;
 import it.arteprogrammazione.restexample.repositories.common.entities.Article;
 import it.arteprogrammazione.restexample.repositories.ordersarticles.OrderArticleRepository;
@@ -52,13 +52,18 @@ public class ArticleService implements IArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO save(RequestArticleDTO request, boolean update) throws ConflictException {
-        if(!update)
+    public ArticleDTO save(RequestArticleDTO request, boolean update) throws ConflictException, NotFoundException {
+        if(!update){
             request.setId(null);
+        }else{
+            if(!articleRepository.existsById(request.getId()))
+                throw new NotFoundException("Article not exists");
+        }
         return articleModelAssembler.toModel(articleRepository.save(articleModelAssembler.toEntity(request)));
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) throws NotFoundException {
         if (!articleRepository.existsById(id))
             throw new NotFoundException("Article " + id + " not exixts");
