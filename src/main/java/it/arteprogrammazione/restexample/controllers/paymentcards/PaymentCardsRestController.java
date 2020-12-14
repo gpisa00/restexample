@@ -81,7 +81,7 @@ public class PaymentCardsRestController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
     })
     @PutMapping
-    public ResponseEntity<PaymentCardDTO> update(RequestPaymentCardDTO request) throws NotFoundException{
+    public ResponseEntity<PaymentCardDTO> update(@Valid @RequestBody RequestPaymentCardDTO request) throws NotFoundException{
         return ResponseEntity.ok(paymentCardService.update(request));
     }
 }
