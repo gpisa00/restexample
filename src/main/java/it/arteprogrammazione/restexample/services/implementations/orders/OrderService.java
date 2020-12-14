@@ -5,6 +5,7 @@ import it.arteprogrammazione.restexample.commons.dto.orders.RequestOrderDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.common.entities.Order;
+import it.arteprogrammazione.restexample.repositories.customers.CustomerRepository;
 import it.arteprogrammazione.restexample.repositories.orders.OrderRepository;
 import it.arteprogrammazione.restexample.repositories.ordersarticles.OrderArticleRepository;
 import it.arteprogrammazione.restexample.services.implementations.orders.assemblers.OrderModelAssembler;
@@ -22,12 +23,16 @@ public class OrderService implements IOrderService {
 
     private final OrderRepository orderRepository;
     private final OrderArticleRepository orderArticleRepository;
+    private final CustomerRepository customerRepository;
     private final OrderModelAssembler orderModelAssembler;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderArticleRepository orderArticleRepository, OrderModelAssembler orderModelAssembler) {
+    public OrderService(OrderRepository orderRepository, OrderArticleRepository orderArticleRepository,
+                        CustomerRepository customerRepository,
+                        OrderModelAssembler orderModelAssembler) {
         this.orderRepository = orderRepository;
         this.orderArticleRepository = orderArticleRepository;
+        this.customerRepository = customerRepository;
         this.orderModelAssembler = orderModelAssembler;
     }
 
@@ -53,6 +58,9 @@ public class OrderService implements IOrderService {
 
         if (!update) {
             request.setId(null);
+            if (!customerRepository.existsById(request.getIdCustomer()))
+                throw new NotFoundException("Customer not exists");
+
         } else {
             if (!orderRepository.existsById(request.getId()))
                 throw new NotFoundException("Order not exists");
