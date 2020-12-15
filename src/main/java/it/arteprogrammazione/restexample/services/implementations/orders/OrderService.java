@@ -62,9 +62,14 @@ public class OrderService implements IOrderService {
                 throw new NotFoundException("Customer not exists");
 
         } else {
-            if (!orderRepository.existsById(request.getId()))
-                throw new NotFoundException("Order not exists");
+            Order order = orderRepository.findById(request.getId()).orElseThrow(
+                    () -> new NotFoundException("Order not exists"));
+
+            if(!customerRepository.existsById(order.getId()))
+                throw new NotFoundException("Customer not exists");
+
         }
+
         return orderModelAssembler.toModel(orderRepository.save(orderModelAssembler.toEntity(request)));
     }
 
