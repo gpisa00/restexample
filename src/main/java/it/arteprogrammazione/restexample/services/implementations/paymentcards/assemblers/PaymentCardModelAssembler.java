@@ -42,7 +42,7 @@ public class PaymentCardModelAssembler extends RepresentationModelAssemblerSuppo
         try {
             if (customerRepository.existsById(idCustomer)) {
                 Link customerLink = linkTo(methodOn(CustomersRestController.class)
-                        .findById(idCustomer)).withRel("customer");
+                        .findById(idCustomer)).withRel("customers");
                 dto.add(customerLink);
             }
         } catch (NotFoundException ex) {

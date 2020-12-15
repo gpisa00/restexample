@@ -3,11 +3,13 @@ package it.arteprogrammazione.restexample.controllers.ordersarticles;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import it.arteprogrammazione.restexample.commons.dto.ordersarticle.OrderArticleDTO;
 import it.arteprogrammazione.restexample.commons.dto.ordersarticle.RequestOrderArticleDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictException;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.services.interfaces.ordersarticles.IOrderArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,17 @@ public class OrdersArticlesRestController {
     @Autowired
     public OrdersArticlesRestController(IOrderArticleService orderArticleService) {
         this.orderArticleService = orderArticleService;
+    }
+
+    @ApiOperation(value = "find all orders articles in the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR"),
+    })
+    @GetMapping
+    public ResponseEntity<CollectionModel<OrderArticleDTO>> findAll() throws NotFoundException {
+        return ResponseEntity.ok(orderArticleService.findAll());
     }
 
     @ApiOperation(code = 201, value = "save order article in the database")

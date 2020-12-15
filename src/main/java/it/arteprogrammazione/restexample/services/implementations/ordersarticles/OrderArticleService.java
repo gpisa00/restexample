@@ -1,5 +1,7 @@
 package it.arteprogrammazione.restexample.services.implementations.ordersarticles;
 
+import it.arteprogrammazione.restexample.commons.dto.orders.OrderDTO;
+import it.arteprogrammazione.restexample.commons.dto.ordersarticle.OrderArticleDTO;
 import it.arteprogrammazione.restexample.commons.dto.ordersarticle.RequestOrderArticleDTO;
 import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.articles.ArticleRepository;
@@ -8,8 +10,11 @@ import it.arteprogrammazione.restexample.repositories.common.entities.Order;
 import it.arteprogrammazione.restexample.repositories.common.entities.OrderArticle;
 import it.arteprogrammazione.restexample.repositories.orders.OrderRepository;
 import it.arteprogrammazione.restexample.repositories.ordersarticles.OrderArticleRepository;
+import it.arteprogrammazione.restexample.services.implementations.ordersarticles.assemblers.OrderArticleModelAssembler;
 import it.arteprogrammazione.restexample.services.interfaces.ordersarticles.IOrderArticleService;
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,11 +27,25 @@ public class OrderArticleService implements IOrderArticleService {
     private final OrderRepository orderRepository;
     private final ArticleRepository articleRepository;
 
+    private final OrderArticleModelAssembler orderArticleModelAssembler;
+
     @Autowired
-    public OrderArticleService(OrderArticleRepository orderArticleRepository, OrderRepository orderRepository, ArticleRepository articleRepository) {
+    public OrderArticleService(OrderArticleRepository orderArticleRepository,
+                               OrderRepository orderRepository,
+                               ArticleRepository articleRepository,
+                               OrderArticleModelAssembler orderArticleModelAssembler) {
         this.orderArticleRepository = orderArticleRepository;
         this.orderRepository = orderRepository;
         this.articleRepository = articleRepository;
+        this.orderArticleModelAssembler = orderArticleModelAssembler;
+    }
+
+    @Override
+    public CollectionModel<OrderArticleDTO> findAll() throws NotFoundException {
+        Iterable<OrderArticle> result = orderArticleRepository.findAll();
+        if (IterableUtils.isEmpty(result))
+            throw new NotFoundException("Order Article is empty");
+        return orderArticleModelAssembler.toCollectionModel(result);
     }
 
     @Override
