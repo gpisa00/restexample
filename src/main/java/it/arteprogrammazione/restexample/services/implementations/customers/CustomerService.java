@@ -101,7 +101,7 @@ public class CustomerService implements ICustomerService {
         if (paymentCardRepository.existsById(id))
             paymentCardRepository.deleteById(id);
 
-        Iterable<Order> orders = orderRepository.findAll();
+        Iterable<Order> orders = orderRepository.findByIdCustomer(id);
         if (!IterableUtils.isEmpty(orders)) {
             orders.forEach(order -> {
                 Integer idOrder = order.getId();
