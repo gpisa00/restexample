@@ -85,13 +85,13 @@ public class PaymentCardService implements IPaymentCardService {
         Integer idCustomer = request.getIdCustomer();
 
         if (!update && paymentCardRepository.existsById(idCustomer))
-            throw new ConflictException("Payment card is present for customer: " + idCustomer);
+            throw new ConflictException("Payment card exists for customer: " + idCustomer);
 
         if(update && !paymentCardRepository.existsById(request.getIdCustomer()))
             throw new NotFoundException("Payment card not found");
 
         if (!customerRepository.existsById(idCustomer))
-            throw new ConflictException("Customer is not present: " + idCustomer);
+            throw new ConflictException("Customer not exists: " + idCustomer);
 
         if (!cardTypeRepository.existsById(request.getIdCardType()))
             throw new ConflictException("Card type not exists");
