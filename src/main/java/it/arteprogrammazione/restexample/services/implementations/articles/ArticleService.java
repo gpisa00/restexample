@@ -6,6 +6,9 @@ import it.arteprogrammazione.restexample.commons.exceptions.commons.ConflictExce
 import it.arteprogrammazione.restexample.commons.exceptions.commons.NotFoundException;
 import it.arteprogrammazione.restexample.repositories.articles.ArticleRepository;
 import it.arteprogrammazione.restexample.repositories.common.entities.Article;
+import it.arteprogrammazione.restexample.repositories.common.entities.Order;
+import it.arteprogrammazione.restexample.repositories.common.entities.OrderArticle;
+import it.arteprogrammazione.restexample.repositories.orders.OrderRepository;
 import it.arteprogrammazione.restexample.repositories.ordersarticles.OrderArticleRepository;
 import it.arteprogrammazione.restexample.services.implementations.articles.assemblers.ArticleModelAssembler;
 import it.arteprogrammazione.restexample.services.interfaces.articles.IArticleService;
@@ -22,15 +25,18 @@ public class ArticleService implements IArticleService {
 
     private final ArticleRepository articleRepository;
     private final OrderArticleRepository orderArticleRepository;
+    private final OrderRepository orderRepository;
 
     private final ArticleModelAssembler articleModelAssembler;
 
     @Autowired
     public ArticleService(ArticleRepository articleRepository,
                           OrderArticleRepository orderArticleRepository,
+                          OrderRepository orderRepository,
                           ArticleModelAssembler articleModelAssembler) {
         this.articleRepository = articleRepository;
         this.orderArticleRepository = orderArticleRepository;
+        this.orderRepository = orderRepository;
         this.articleModelAssembler = articleModelAssembler;
     }
 
@@ -53,11 +59,20 @@ public class ArticleService implements IArticleService {
     @Override
     @Transactional
     public ArticleDTO save(RequestArticleDTO request, boolean update) throws ConflictException, NotFoundException {
+        if(request.getPrice() != null)
+            request.setPrice(Math.abs(request.getPrice()));
+
         if(!update){
             request.setId(null);
         }else{
-            if(!articleRepository.existsById(request.getId()))
-                throw new NotFoundException("Article not exists");
+            Integer idArticle = request.getId();
+
+            Article article = articleRepository.findById(idArticle).orElseThrow(
+                    () -> new NotFoundException("Article not exists")
+            );
+
+            updateTotalPriceOrders(idArticle, article.getPrice(), request.getPrice());
+
         }
         return articleModelAssembler.toModel(articleRepository.save(articleModelAssembler.toEntity(request)));
     }
@@ -80,5 +95,17 @@ public class ArticleService implements IArticleService {
         if(!IterableUtils.isEmpty(orderArticleRepository.findByIdArticle(id)))
             orderArticleRepository.deleteByIdArticle(id);
 
+    }
+
+    private void updateTotalPriceOrders(Integer idArticle, Integer dbPrice, Integer requestPrice){
+        if(requestPrice != null && !dbPrice.equals(requestPrice)){
+            Iterable<OrderArticle> ordersarticles = orderArticleRepository.findByIdArticle(idArticle);
+            for(OrderArticle orderArticle : ordersarticles){
+                Order order = orderRepository.findById(orderArticle.getIdOrder()).get();
+                orderRepository.setTotalPrice(
+                        order.getTotalPrice() - dbPrice + requestPrice,
+                        order.getId());
+            }
+        }
     }
 }
