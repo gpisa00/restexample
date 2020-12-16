@@ -80,20 +80,27 @@ public class ArticleService implements IArticleService {
     @Override
     @Transactional
     public void deleteById(Integer id) throws NotFoundException {
-        if (!articleRepository.existsById(id))
-            throw new NotFoundException("Article " + id + " not exixts");
+        Article article = articleRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Article not exists")
+        );
 
         //Cancellazione tabelle correlate
-        deleteOnTableRelation(id);
+        deleteOnTableRelation(article);
         //-------------------------------
 
         articleRepository.deleteById(id);
     }
 
-    private void deleteOnTableRelation(Integer id) {
+    private void deleteOnTableRelation(Article article) {
 
-        if(!IterableUtils.isEmpty(orderArticleRepository.findByIdArticle(id)))
-            orderArticleRepository.deleteByIdArticle(id);
+        Iterable<OrderArticle> ordersarticles = orderArticleRepository.findByIdArticle(article.getId());
+        for(OrderArticle orderArticle : ordersarticles){
+            Order order = orderRepository.findById(orderArticle.getIdOrder()).get();
+            orderRepository.setTotalPrice(
+                    order.getTotalPrice() - article.getPrice(),
+                    order.getId());
+        }
+        orderArticleRepository.deleteByIdArticle(article.getId());
 
     }
 
