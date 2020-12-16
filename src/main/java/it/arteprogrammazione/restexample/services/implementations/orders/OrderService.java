@@ -65,7 +65,7 @@ public class OrderService implements IOrderService {
             Order order = orderRepository.findById(request.getId()).orElseThrow(
                     () -> new NotFoundException("Order not exists"));
 
-            if(!customerRepository.existsById(order.getId()))
+            if(!customerRepository.existsById(order.getIdCustomer()))
                 throw new NotFoundException("Customer not exists");
 
         }
